@@ -23,40 +23,42 @@ class App extends Component {
     this.state = {
       currentUser: chattyData.currentUser.name,
       messages: chattyData.messages,
-
+      oldName: 'null'
     };
   }
 
+  sendName(text) {
+    this.setState({oldName: this.state.currentUser});
+    this.setState({currentUser: text});
+    const newUser = {id: this.index, username: text, content: this.state.currentUser, type: 'postNotification'};
+    this.socket.send(JSON.stringify(newUser));
+  }
+
+  sendMessage(text) {
+    const newMessage = {id: this.index, username: this.state.currentUser, content: text, type: 'postMessage'};
+    this.socket.send(JSON.stringify(newMessage));
+  }
 
   componentDidMount() {
     this.socket = new WebSocket('ws://localhost:3001');
 
     this.socket.onmessage = (event) => {
-      const newMessages = this.state.messages;
-      const oldUser = this.state.currentUser;
+      const oldMessages = this.state.messages;
+      // const oldName = this.state.currentUser;
       const messageObject = JSON.parse(event.data);
-
-      if (messageObject.type === 'username') {
-        this.setState({ currentUser: messageObject.username });
-      } else if (messageObject.type == 'message') {
-                newMessages.push(messageObject);
-        this.setState({messages: newMessages});
-
+      console.log(messageObject.content);
+      if (messageObject.type === 'incomingNotification') {
+        this.setState({
+          messages: oldMessages.concat({ content: messageObject.content + " changed their username to " + messageObject.username}),
+          currentUser: messageObject.username
+        });
+      } else if (messageObject.type === 'incomingMessage') {
+        this.setState({messages: oldMessages.concat(messageObject)});
       }
     };
-
   }
 
-  sendName(text) {
-    this.setState({currentUser: text});
-    const newUser = {id: this.index, username: text, content: this.state.content, type: 'username'};
-    this.socket.send(JSON.stringify(newUser));
-  }
 
-  sendMessage(text) {
-    const newMessage = {id: this.index, username: this.state.currentUser, content: text, type: 'message'};
-    this.socket.send(JSON.stringify(newMessage));
-  }
 
   render() {
     return (

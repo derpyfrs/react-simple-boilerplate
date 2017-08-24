@@ -15,13 +15,13 @@ class ChatBar extends Component {
   }
   render() {
     return (
-        <div>
-            <footer className="chatbar">
-                  <input className="chatbar-username" placeholder="Your Name (Optional)" onKeyUp={(n) => this.onUserInputName(n)}/>
-                   <input className="chatbar-message" placeholder="Type a message and hit ENTER" onKeyUp={(e) => this.onUserInput(e)}/>
-                </footer>
-          </div>
-      )
+      <div>
+        <footer className="chatbar">
+          <input className="chatbar-username" placeholder="Your Name (Optional)" onKeyUp={(n) => this.onUserInputName(n)}/>
+          <input className="chatbar-message" placeholder="Type a message and hit ENTER" onKeyUp={(e) => this.onUserInput(e)}/>
+        </footer>
+      </div>
+    )
   }
 }
 export default ChatBar;
