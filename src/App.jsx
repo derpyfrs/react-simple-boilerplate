@@ -22,49 +22,34 @@ class App extends Component {
     super();
     this.state = {
       currentUser: chattyData.currentUser.name,
-      messages: chattyData.messages
+      messages: chattyData.messages,
+
     };
   }
 
 
   componentDidMount() {
     this.socket = new WebSocket('ws://localhost:3001');
-    this.socket.addEventListener('messageObject', (data) => {
-      // console.log(data)
-    })
 
-    // this.socket.onmessage = (event) => {
-    //   let userMessage = JSON.parse(event.data);
-    //   this.setState.push(userMessage);
-    //   // code to handle incoming message
-    // }
-    this.socket.addEventListener('open', () => {
-        // this.socket.send('it works');
-    });
     this.socket.onmessage = (event) => {
       const newMessages = this.state.messages;
       const oldUser = this.state.currentUser;
       const messageObject = JSON.parse(event.data);
 
-      if (messageObject.type == 'username') {
+      if (messageObject.type === 'username') {
         this.setState({ currentUser: messageObject.username });
       } else if (messageObject.type == 'message') {
+                newMessages.push(messageObject);
         this.setState({messages: newMessages});
-        newMessages.push(messageObject);
+
       }
     };
-    // this.socket.onUserChange = (event) => {
-    //   const newMessages = this.state.messages;
-    //   const newUsers = this.state.currentUser;
-    //   const messageObject = JSON.parse(event.data);
-    //   newMessages.push(messageObject);
 
-    //   this.setState({messages: newMessages, currentUser: newUsers});
-    // };
   }
 
   sendName(text) {
-    const newUser = {id: this.index, username: text, type: 'username'};
+    this.setState({currentUser: text});
+    const newUser = {id: this.index, username: text, content: this.state.content, type: 'username'};
     this.socket.send(JSON.stringify(newUser));
   }
 
@@ -72,6 +57,7 @@ class App extends Component {
     const newMessage = {id: this.index, username: this.state.currentUser, content: text, type: 'message'};
     this.socket.send(JSON.stringify(newMessage));
   }
+
   render() {
     return (
       <div>
