@@ -7,6 +7,11 @@
       margin: 70px 0;
     }
 
+    .user-count{
+      float: right;
+      padding: 2em;
+    }
+
     .chatbar {
       background: tomato;
       border-top: 1px solid black;
@@ -28,12 +33,17 @@
       padding: 0 9px;
     }
 
+    .notification-content {
+      font: bold;
+    }
+
     .chatbar-message {
       flex: 8;
     }
 
     .chatbar-username {
       flex: 2;
+
     }
 
     .message {
@@ -60,6 +70,8 @@
     .message-username {
       flex: 2;
       font-weight: 700;
+      font-style: italic;
+      font-size: 1.3em;
     }
 
     .navbar {
