@@ -17,13 +17,16 @@ const chattyData = {
   ]
 }
 
+
 class App extends Component {
   constructor() {
     super();
     this.state = {
       currentUser: chattyData.currentUser.name,
       messages: chattyData.messages,
-      oldName: 'null'
+      oldName: 'null',
+      usercount: 0
+
     };
   }
 
@@ -41,19 +44,20 @@ class App extends Component {
 
   componentDidMount() {
     this.socket = new WebSocket('ws://localhost:3001');
-
     this.socket.onmessage = (event) => {
       const oldMessages = this.state.messages;
-      // const oldName = this.state.currentUser;
       const messageObject = JSON.parse(event.data);
       console.log(messageObject.content);
       if (messageObject.type === 'incomingNotification') {
         this.setState({
-          messages: oldMessages.concat({ content: messageObject.content + " changed their username to " + messageObject.username}),
-          currentUser: messageObject.username
-        });
+          messages: oldMessages.concat({id: messageObject.id, content: messageObject.content + " changed their username to " + messageObject.username}),
+          currentUser: messageObject.username,
+          id: messageObject.id
+        }); console.log(messageObject.id);
       } else if (messageObject.type === 'incomingMessage') {
         this.setState({messages: oldMessages.concat(messageObject)});
+      } else if (messageObject.type === 'count') {
+        this.setState({usercount: messageObject.userCount})
       }
     };
   }
@@ -63,7 +67,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <NavBar/>
+        <NavBar usercount={this.state.usercount}/>
         <MessageList messages={this.state.messages}/>
         <ChatBar  user={this.state.currentUser}
                   sendMessage={text => this.sendMessage(text)}
