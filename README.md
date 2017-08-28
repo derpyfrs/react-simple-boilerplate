@@ -32,10 +32,19 @@ npm run lint
 
 ### Dependencies
 
-* React
-* Webpack
-* [babel-loader](https://github.com/babel/babel-loader)
-* [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
+babel-core
+babel-loader
+babel-preset-es2015
+babel-preset-react
+css-loader
+node-sass
+sass-loader
+sockjs-client
+style-loader
+webpack
+webpack-dev-server
+react
+react-dom
 ```
 
 Multiple users can connect to the host server as unique individuals, can assign names to themselves and chat in real time.
