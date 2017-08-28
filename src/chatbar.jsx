@@ -17,8 +17,8 @@ class ChatBar extends Component {
     return (
       <div>
         <footer className="chatbar">
-          <input className="chatbar-username" placeholder="Your Name (Optional)" onKeyUp={(n) => this.onUserInputName(n)}/>
-          <input className="chatbar-message" placeholder="Type a message and hit ENTER" onKeyUp={(e) => this.onUserInput(e)}/>
+          <input className="chatbar-username" placeholder="Your Name (Optional)" onKeyDown={(n) => this.onUserInputName(n)}/>
+          <input className="chatbar-message" placeholder="Type a message and hit ENTER" onKeyDown={(e) => this.onUserInput(e)}/>
         </footer>
       </div>
     )

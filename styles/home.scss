@@ -34,7 +34,9 @@
     }
 
     .notification-content {
-      font: bold;
+      /*font-style: italic;*/
+      font-weight: bold;
+      font-size: 1.3em;
     }
 
     .chatbar-message {
